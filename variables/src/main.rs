@@ -1,4 +1,5 @@
 fn main() {
-    let spaces = "   ";
+    let mut spaces = "   ";
     let spaces = spaces.len();
+    println!("{}", spaces);
 }
