@@ -1,4 +1,10 @@
 #![allow(unused)]
+
 fn main() {
-let a: [i32; 5] = [1, 2, 3, 4, 5];
+    let a = [3; 5];
+    println!("{a:?}");
+    println!("{a:#?}");
+    let a = [3, 3, 3, 3, 3];
+    println!("{a:?}");
+    println!("{a:#?}");
 }
