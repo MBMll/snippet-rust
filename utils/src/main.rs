@@ -1,3 +1,7 @@
+use std::borrow::Borrow;
+
+use crate::collection::Tree;
+
 mod collection;
 
 #[derive(Debug)]
@@ -7,14 +11,21 @@ pub struct A {
     children: Option<Vec<A>>,
 }
 
+impl Clone for A {
+    fn clone(&self) -> Self {
+        self.clone()
+    }
+}
+
 impl collection::Tree<String> for A {
+    type Node = A;
     fn get_parent(&self) -> String {
         match &self.parent_id {
             None => {
                 String::from("")
             }
             Some(x) => {
-                *x
+                x.clone()
             }
         }
     }
@@ -23,17 +34,29 @@ impl collection::Tree<String> for A {
         self.id.clone()
     }
 
-    fn get_children(&mut self) -> Vec<Self> {
-        match &self.children {
-            None => {
-                self.children = Option::from(Vec::new());
-                self.children.expect("")
-            }
-            Some(children) => {
-                children
-            }
-        }
+    fn get_node(&self) -> &Self::Node {
+        self
     }
+
+    fn put_all(&mut self, children: Vec<Self::Node>) {
+        // let mut tmp: Vec<A> = Vec::new();
+        // for x in children {
+        //     tmp.push(x.b)
+        // }
+        self.children = Option::from(children);
+    }
+
+    // fn get_children(&mut self) -> Vec<Self> {
+    //     match &self.children {
+    //         None => {
+    //             self.children = Option::from(Vec::new());
+    //             self.children.expect("")
+    //         }
+    //         Some(children) => {
+    //             children
+    //         }
+    //     }
+    // }
 }
 
 // #[derive(Debug)]
@@ -44,7 +67,7 @@ fn main() {
     list.push(A { id: String::from("sd"), parent_id: parent_id.clone(), children: None });
     list.push(A { id: String::from("se"), parent_id: parent_id.clone(), children: None });
 
-    let v = collection::toTree(list);
+    let v: Vec<A> = collection::toTree(list);
     for x in v {
         println!("{:?}", x);
     }
